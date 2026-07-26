@@ -72,23 +72,26 @@
 
   .eyebrow {
     font-family: 'Poppins', sans-serif;
-    font-weight: 700;
-    font-size: 12.5px;
-    letter-spacing: 0.16em;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--ink);
+    background: var(--accent);
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    padding: 7px 14px 6px;
+    border-radius: 999px;
   }
   .eyebrow::before {
     content: '';
-    width: 22px;
-    height: 2px;
-    background: var(--accent);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ink);
   }
-  section.on-light .eyebrow { color: #b58f00; }
-  section.on-light .eyebrow::before { background: #b58f00; }
+  section.on-dark .eyebrow, .on-dark .eyebrow { background: var(--accent); color: var(--ink); }
 
   /* ---------- Nav ---------- */
   .nav {
@@ -270,7 +273,7 @@
   .machine-reveal {
     background: var(--ink);
     color: #fff;
-    padding: 90px 0 70px;
+    padding: 50px 0 40px;
   }
   .machine-stage {
     position: relative;
@@ -347,8 +350,8 @@
   @keyframes pulse { 0%,100% { opacity: .3; } 50% { opacity: 1; } }
 
   /* ---------- Section generic ---------- */
-  section { padding: 108px 0; position: relative; }
-  section.fade-top { padding-top: 168px; }
+  section { padding: 76px 0; position: relative; }
+  section.fade-top { padding-top: 118px; }
   section.fade-top::before {
     content: '';
     position: absolute; top: 0; left: 0; right: 0; height: 190px;
@@ -406,6 +409,7 @@
   .stat-card:nth-child(2) { background: var(--accent); color: var(--ink); }
   .stat-card:nth-child(3) { background: var(--paper-soft); color: var(--ink); border: 1px solid var(--line-on-light); }
   .stat-card .num { font-family: 'Poppins'; font-weight: 800; font-size: 30px; min-width: 74px; }
+  .stat-card .num.big { font-size: 42px; }
   .stat-card .lbl { font-size: 13.5px; font-weight: 600; opacity: 0.86; }
 
   /* ---------- Que hacemos (feature grid) ---------- */
@@ -584,6 +588,7 @@
     flex-direction: column;
     gap: 10px;
     overflow: hidden;
+    text-align: center;
   }
   .demo-screen {
     background: #0a0a0a;
@@ -647,7 +652,8 @@
   .demo-side { display: flex; flex-direction: column; gap: 6px; }
   .demo-reader, .demo-chute {
     flex: 1;
-    border: 1.5px dashed rgba(255,255,255,0.22);
+    border: 1.5px solid rgba(255,255,255,0.14);
+    background: #0d0d0d;
     border-radius: 10px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 3px;
@@ -657,7 +663,16 @@
     position: relative;
     min-height: 54px;
   }
-  .demo-reader svg { width: 17px; height: 17px; }
+  .demo-reader::before {
+    content: '';
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%; height: 3px;
+    background: #000;
+    border-radius: 2px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .demo-reader svg { width: 17px; height: 17px; position: relative; margin-bottom: 8px; }
   .demo-reader.drop-ready {
     border-color: var(--accent);
     border-style: solid;
@@ -682,7 +697,7 @@
     position: absolute;
     left: 50%; top: 70%;
     transform: translate(-50%, -50%);
-    width: 96px; height: 60px;
+    width: 100px; height: 62px;
     border-radius: 8px;
     cursor: grab;
     align-items: center; justify-content: center;
@@ -692,11 +707,30 @@
     user-select: none;
     touch-action: none;
     z-index: 5;
+    transition: transform .35s cubic-bezier(.4,0,.2,1);
   }
   .demo-instrument.show { display: flex; }
   .demo-instrument.dragging { cursor: grabbing; transition: none; }
-  .demo-instrument[data-kind="card"] { background: linear-gradient(135deg,#2a2a2a,#111); border: 1px solid var(--accent); }
-  .demo-instrument[data-kind="cash"] { background: #1f7a3d; width: 100px; height: 46px; border-radius: 6px; }
+  .demo-instrument.swipe { transition: transform .4s cubic-bezier(.5,0,.5,1), opacity .4s ease .25s; }
+  .demo-instrument[data-kind="card"] {
+    background: linear-gradient(135deg,#2c2c2c,#0a0a0a);
+    border: 1px solid rgba(255,214,0,0.4);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 8px 10px;
+  }
+  .demo-instrument[data-kind="card"] .card-chip {
+    width: 18px; height: 13px; border-radius: 3px;
+    background: linear-gradient(135deg,#ffe680,#d4a300);
+  }
+  .demo-instrument[data-kind="card"] .card-number {
+    font-size: 8.5px; font-weight: 700; letter-spacing: 0.03em; color: rgba(255,255,255,0.9);
+  }
+  .demo-instrument[data-kind="card"] .card-brand {
+    font-size: 7px; font-weight: 700; letter-spacing: 0.02em; color: var(--accent); text-transform: uppercase;
+  }
+  .demo-instrument[data-kind="cash"] { background: linear-gradient(135deg,#2a8a4a,#1a5c32); width: 104px; height: 48px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.15); }
   .demo-instrument[data-kind="coin"] { background: radial-gradient(circle at 35% 30%, #ffe680, #d4a300); width: 54px; height: 54px; border-radius: 50%; color: #3a2c00; }
 
   .demo-approved {
@@ -715,10 +749,11 @@
   .demo-controls { display: flex; flex-direction: column; gap: 14px; }
   .demo-methods { display: flex; flex-direction: column; gap: 10px; }
   .demo-method-btn {
-    display: flex; align-items: center; gap: 12px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
     background: #161616; border: 1.5px solid var(--line-on-dark);
     color: #fff; border-radius: 12px; padding: 16px 18px;
     font-family: 'Poppins'; font-weight: 700; font-size: 14.5px;
+    text-align: center;
     transition: border-color .18s ease, background .18s ease;
   }
   .demo-method-btn .e { font-size: 20px; }
@@ -758,6 +793,7 @@
     content: '';
     position: absolute; inset: 0;
     background: radial-gradient(ellipse 70% 60% at 100% 0%, rgba(255,214,0,0.16), transparent 65%);
+    pointer-events: none;
   }
   .fit-visual h3 { position: relative; font-size: 22px; margin-bottom: 14px; }
   .fit-visual p { position: relative; color: var(--muted-on-dark); font-size: 14.5px; margin-bottom: 26px; }
@@ -914,7 +950,7 @@
           <div class="shine"></div>
           <div class="machine-badge"><span class="dot"></span>Monitoreo en vivo</div>
         </div>
-        <div class="scroll-hint"><span class="line"></span>Máquina real, instalada y operando</div>
+        <div class="scroll-hint"><span class="line"></span>Así se ven nuestras máquinas</div>
       </div>
     </div>
   </section>
@@ -934,13 +970,13 @@
           <div class="badge-row">
             <span class="badge y">Snacks</span>
             <span class="badge">Bebidas</span>
-            <span class="badge">Café</span>
+            <span class="badge y">Café</span>
             <span class="badge">Pago con tarjeta y efectivo</span>
           </div>
         </div>
         <div class="reveal stat-cards">
-          <div class="stat-card"><div class="num">0</div><div class="lbl">Pesos de inversión para tu empresa</div></div>
-          <div class="stat-card"><div class="num">%</div><div class="lbl">De las ventas, directo para tu institución</div></div>
+          <div class="stat-card"><div class="num">$</div><div class="lbl">0 pesos de inversión para tu empresa</div></div>
+          <div class="stat-card"><div class="num big">%</div><div class="lbl">De las ventas, directo para tu institución</div></div>
           <div class="stat-card"><div class="num">24/7</div><div class="lbl">Monitoreo, abastecimiento y mantenimiento</div></div>
         </div>
       </div>
@@ -993,7 +1029,7 @@
         </div>
         <div class="feature-card hi feature-card-money">
           <div class="ic">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.8"><path d="M12 21c4-3 8-6.5 8-11a5 5 0 00-8-4 5 5 0 00-8 4c0 4.5 4 8 8 11z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0D0D0D" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M9.5 9.3c0-1 1-1.8 2.5-1.8s2.5.7 2.5 1.7c0 2.3-5 1.1-5 3.4 0 1 1 1.7 2.5 1.7s2.5-.8 2.5-1.8"/></svg>
           </div>
           <h3>Beneficio económico para tu organización</h3>
           <p>Además de mejorar la experiencia de quienes usan tus instalaciones, tu organización puede recibir un <strong>porcentaje de las ventas</strong> generadas por la máquina. Creemos en relaciones de beneficio mutuo — evaluamos cada proyecto de forma personalizada y estamos abiertos a negociar un esquema de participación flexible.</p>
@@ -1055,7 +1091,7 @@
         </div>
       </div>
 
-      <div class="demo-intro reveal" style="margin-top:90px;">
+      <div class="demo-intro reveal" style="margin-top:56px;">
         <span class="eyebrow">Pruébalo tú mismo</span>
         <h2 style="margin-top:16px;">Así compra alguien en tu empresa.</h2>
         <p style="margin-top:14px; color:var(--muted-on-dark); max-width:520px; font-size:15.5px;">Acepta tarjeta, efectivo y monedas. Elige tu producto directo en la pantalla inteligente y mira cómo cae. Es la experiencia real frente a la máquina.</p>
@@ -1505,7 +1541,7 @@
       var cell = document.createElement('div');
       cell.className = 'demo-product-cell';
       cell.setAttribute('data-code', pcode);
-      cell.innerHTML = '<div class="code">' + pcode + '</div><div class="emoji">' + p.e + '</div><span class="name">' + p.n + '</span><div class="price">$' + p.p + '</div>';
+      cell.innerHTML = '<div class="code">' + pcode + '</div><div class="emoji">' + p.e + '</div><span class="name">' + p.n + '</span><div class="price">RD$' + p.p + '</div>';
       cell.addEventListener('click', function(){
         if (demo.getAttribute('data-state') !== 'select') return;
         code = pcode;
@@ -1520,9 +1556,13 @@
 
     function setState(s){ demo.setAttribute('data-state', s); }
     function setPrompt(t, speakIt){ promptEl.textContent = t; if (speakIt) say(t); }
-    function resetInstrumentPosition(){ instrument.style.left = '50%'; instrument.style.top = '85%'; }
+    function resetInstrumentPosition(){
+      instrument.style.left = '50%'; instrument.style.top = '85%';
+      instrument.style.transform = ''; instrument.style.opacity = '';
+      instrument.classList.remove('swipe');
+    }
     function showInstrument(){ instrument.classList.add('show'); resetInstrumentPosition(); }
-    function hideInstrument(){ instrument.classList.remove('show'); }
+    function hideInstrument(){ instrument.classList.remove('show'); resetInstrumentPosition(); }
     function highlightCell(c){
       productsWrap.querySelectorAll('.demo-product-cell').forEach(function(el){
         el.classList.toggle('selected', el.getAttribute('data-code') === c);
@@ -1541,7 +1581,13 @@
       btn.addEventListener('click', function(){
         kind = btn.getAttribute('data-method');
         instrument.setAttribute('data-kind', kind);
-        instrument.textContent = kind === 'card' ? 'SNACK SPOT' : (kind === 'cash' ? '$100' : '$5');
+        if (kind === 'card') {
+          instrument.innerHTML = '<span class="card-chip"></span><span class="card-number">•••• •••• •••• 4521</span><span class="card-brand">Banco Popular</span>';
+        } else if (kind === 'cash') {
+          instrument.innerHTML = '<span>RD$100</span>';
+        } else {
+          instrument.innerHTML = '<span>RD$5</span>';
+        }
         code = '';
         codeEl.textContent = ' ';
         setState('insert');
@@ -1564,11 +1610,11 @@
         return;
       }
       highlightCell(code);
-      codeEl.textContent = p.n + ' — $' + p.p;
+      codeEl.textContent = p.n + ' — RD$' + p.p;
       product.textContent = p.e;
       setState('confirm');
       showInstrument();
-      setPrompt('Son $' + p.p + '. Acerca tu ' + LABELS[kind] + ' de nuevo para pagar', true);
+      setPrompt('Son RD$' + p.p + '. Acerca tu ' + LABELS[kind] + ' de nuevo para pagar', true);
     }
 
     function onDrop(){
@@ -1577,25 +1623,37 @@
       var readerRect = reader.getBoundingClientRect();
       if (!within(instRect, readerRect)) { resetInstrumentPosition(); return; }
 
-      if (st === 'insert') {
-        hideInstrument();
-        beep(660, 0.1);
-        setState('select');
-        setPrompt('Elige tu producto en la pantalla', true);
-      } else if (st === 'confirm') {
-        hideInstrument();
-        beepChime();
-        approvedEl.classList.add('show');
-        setPrompt('Aprobado. Espere un momento…', true);
+      function swipeThenHide(cb){
+        instrument.classList.add('swipe');
+        instrument.style.transform = 'translate(calc(-50% + 70px), -50%)';
+        instrument.style.opacity = '0';
         setTimeout(function(){
-          approvedEl.classList.remove('show');
-          setState('dispensing');
-          product.classList.add('drop');
+          hideInstrument();
+          cb();
+        }, 420);
+      }
+
+      if (st === 'insert') {
+        beep(660, 0.1);
+        swipeThenHide(function(){
+          setState('select');
+          setPrompt('Elige tu producto en la pantalla', true);
+        });
+      } else if (st === 'confirm') {
+        beepChime();
+        swipeThenHide(function(){
+          approvedEl.classList.add('show');
+          setPrompt('Aprobado. Espere un momento…', true);
           setTimeout(function(){
-            setState('collect');
-            setPrompt('Listo. Recoja su producto.', true);
-          }, 750);
-        }, 900);
+            approvedEl.classList.remove('show');
+            setState('dispensing');
+            product.classList.add('drop');
+            setTimeout(function(){
+              setState('collect');
+              setPrompt('Listo. Recoja su producto.', true);
+            }, 750);
+          }, 900);
+        });
       }
     }
 
